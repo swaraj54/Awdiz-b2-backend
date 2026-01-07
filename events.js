@@ -1,9 +1,9 @@
-import events from 'events'
+import events from "events";
 
-const myEmitter = new events.EventEmitter()
+const myEmitter = new events.EventEmitter();
 
-myEmitter.on('greet', (name) => {
-  console.log(`Hello, ${name}!`)
-})
+myEmitter.on("greet", (name) => {
+  console.log(`Hello, ${name}!`);
+});
 
-myEmitter.emit('greet', 'Alice')
+myEmitter.emit("greet", "Alice");

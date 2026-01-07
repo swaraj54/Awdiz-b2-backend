@@ -1,0 +1,10 @@
+1 step - use command npm init -y
+which use to create a package.json
+
+2 step - create index.js file 
+
+3 step - install express
+
+4 step - import and configure express in index.js file
+
+5 step - write a command in package.json to start server
