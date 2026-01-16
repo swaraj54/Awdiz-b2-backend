@@ -2,6 +2,7 @@ import express from "express";
 
 const app = express();
 
+// inbuilt middleware - .use()
 app.use(express.json());
 
 let todos = [];
@@ -24,7 +25,7 @@ app.get("/todos/:todoId", (req, res) => {
 // create todo
 app.post("/todos", (req, res) => {
   const { todo } = req.body;
-  todos.push({ todo, id: counter });
+  todos.push({ todo :todo, id: counter });
   counter++;
   res.status(201).send("Todo created successfully.");
 });
@@ -40,7 +41,7 @@ app.put("/todos/:todoId", (req, res) => {
 // delete todo
 app.delete("/todos/:todoId", (req, res) => {
 
-    
+
   res.send("DELETE request to delete todo");
 });
 
