@@ -2,10 +2,18 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import MainRouter from "./routes/index.js";
+import cors from "cors";
 
 const app = express();
 
 app.use(express.json());
+
+const corsOptions = {
+  origin: "http://localhost:5173", // Replace with your frontend URL
+  optionsSuccessStatus: 200,
+  credentials: true,
+};
+app.use(cors(corsOptions));
 
 dotenv.config();
 
