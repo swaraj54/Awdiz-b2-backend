@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import MainRouter from "./routes/index.js";
 import cors from "cors";
+import { tokenMiddleware } from "./middlewares/tokenMiddleware.js";
 
 const app = express();
 
@@ -26,7 +27,7 @@ app.get("/", (req, res) => {
   res.send("Hello from Server 4");
 });
 
-app.use("/api/v1", MainRouter);
+app.use("/api/v1", tokenMiddleware, MainRouter);
 
 app.listen(8000, () => {
   console.log("Server is running on port 8000");

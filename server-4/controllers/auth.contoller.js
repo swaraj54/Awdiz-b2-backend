@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 export const register = async (req, res) => {
   try {
-    console.log(req.body,"req.body")
+    console.log(req.body, "req.body");
     const { name, email, password, phone } = req.body;
     if (!name || !email || !password || !phone) {
       return res
@@ -56,7 +56,7 @@ export const login = async (req, res) => {
 
     const isPassowrdCorret = await bcrypt.compare(
       password,
-      isUserExist.password
+      isUserExist.password,
     );
 
     if (!isPassowrdCorret) {
@@ -67,7 +67,7 @@ export const login = async (req, res) => {
 
     const token = await jwt.sign(
       { id: isUserExist._id, role: isUserExist.role },
-      process.env.JWT_SECRET
+      process.env.JWT_SECRET,
     );
 
     console.log(token, "token");
@@ -87,6 +87,47 @@ export const login = async (req, res) => {
       success: true,
       message: "Login Successful",
       userData: userData,
+    });
+  } catch (error) {
+    console.log("Error registering user:", error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Error registering user" });
+  }
+};
+
+export const logout = async (req, res) => {
+  try {
+    console.log(req.user, "req.user in logout");
+    res.clearCookie("token");
+    return res
+      .status(200)
+      .json({ success: true, message: "Logout Successful" });
+  } catch (error) {
+    console.log("Error registering user:", error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Error registering user" });
+  }
+};
+
+export const getCurrentUser = async (req, res) => {
+  try {
+    console.log(req.user, "req.user in logout");
+    const isUserExist = await User.findById(req.user._id);
+    if (!isUserExist) {
+      return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
+
+    const userData = {
+      name: isUserExist.name,
+      email: isUserExist.email,
+      phone: isUserExist.phone,
+      id: isUserExist._id,
+    };
+    return res.status(200).json({
+      success: true,
+      user: userData,
     });
   } catch (error) {
     console.log("Error registering user:", error);
