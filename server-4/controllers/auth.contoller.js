@@ -5,8 +5,8 @@ import jwt from "jsonwebtoken";
 export const register = async (req, res) => {
   try {
     console.log(req.body, "req.body");
-    const { name, email, password, phone } = req.body;
-    if (!name || !email || !password || !phone) {
+    const { name, email, password, phone, role } = req.body;
+    if (!name || !email || !password || !phone || !role) {
       return res
         .status(400)
         .json({ success: false, message: "All fields are required" });
@@ -25,7 +25,13 @@ export const register = async (req, res) => {
     }
     const hashPassword = await bcrypt.hash(password, 10);
     console.log(password, "password", hashPassword);
-    const newUser = User({ name: name, email, password: hashPassword, phone });
+    const newUser = User({
+      name: name,
+      email,
+      password: hashPassword,
+      phone,
+      role,
+    });
     console.log(newUser, "newUser");
     await newUser.save();
     return res.status(201).json({ success: true, message: "User registered" });
@@ -82,6 +88,7 @@ export const login = async (req, res) => {
       email: isUserExist.email,
       phone: isUserExist.phone,
       id: isUserExist._id,
+      role: isUserExist.role,
     };
     return res.status(200).json({
       success: true,
@@ -124,6 +131,7 @@ export const getCurrentUser = async (req, res) => {
       email: isUserExist.email,
       phone: isUserExist.phone,
       id: isUserExist._id,
+      role: isUserExist.role,
     };
     return res.status(200).json({
       success: true,
