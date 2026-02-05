@@ -3,7 +3,12 @@ import User from "../models/user.schema.js";
 
 export const tokenMiddleware = async (req, res, next) => {
   try {
-    const skipPaths = ["/auth/login", "/auth/register"];
+    const skipPaths = [
+      "/auth/login",
+      "/auth/register",
+      "/common/view-products",
+      "/common/view-single-product",
+    ];
     const currentPath = req.path;
     console.log(currentPath, "currentPath");
     if (skipPaths.map((path) => currentPath.startsWith(path)).includes(true)) {

@@ -8,6 +8,6 @@ const SellerRouter = Router();
 // Define your auth routes here
 
 SellerRouter.post("/add-products", addProducts);
-SellerRouter.post("/view-added-products", viewAddedProducts);
+SellerRouter.get("/view-added-products", viewAddedProducts);
 
 export default SellerRouter;
