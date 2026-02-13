@@ -42,6 +42,7 @@ QueryRouter.get("/lte", async (req, res) => {
 QueryRouter.get("/eq", async (req, res) => {
   try {
     const products = await Product.find({ price: { $eq: 1000 } });
+    // const products = await Product.find({ price: 1000 });
     return res.send(products);
   } catch (error) {
     return res.send(error);
@@ -125,10 +126,33 @@ QueryRouter.get("/nor", async (req, res) => {
     return res.send(error);
   }
 });
-
+// Number("100") = 100
 QueryRouter.get("/type", async (req, res) => {
   try {
-    const products = await Product.find({ stock: { $type: "number" } });
+    const products = await Product.find({ stock: { $type: "string" } });
+    // const updatedProduct = await Product.findByIdAndUpdate(products._id, {
+    //   stock: Number(products.stock),
+    // });
+    return res.send(products);
+  } catch (error) {
+    return res.send(error);
+  }
+});
+
+QueryRouter.get("/matching-grouping", async (req, res) => {
+  try {
+    const products = await Product.aggregate([
+      { $match: { price: { $gt: 500 } } },
+      {
+        $group: {
+          // _id: "$name",
+          _id: "$category",
+          additionOfStock: { $sum: "$stock" },
+          totalCost: { $sum: { $multiply: ["$price", "$stock"] } },
+        },
+      },
+    ]);
+
     return res.send(products);
   } catch (error) {
     return res.send(error);
