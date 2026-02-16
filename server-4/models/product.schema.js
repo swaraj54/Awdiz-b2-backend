@@ -13,6 +13,8 @@ const ProductSchema = new mongoose.Schema({
     ref: "users",
     required: true,
   },
+  tags: [{ type: String }],
+  //  ["trending","bestseller","best product of year"]
 });
 const Product = mongoose.model("products", ProductSchema);
 export default Product;

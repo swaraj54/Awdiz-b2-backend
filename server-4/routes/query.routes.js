@@ -158,4 +158,43 @@ QueryRouter.get("/matching-grouping", async (req, res) => {
     return res.send(error);
   }
 });
+
+QueryRouter.get("/unwinding", async (req, res) => {
+  try {
+    const products = await Product.aggregate([
+      { $match: { tags: { $exists: true } } },
+      { $unwind: "$tags" },
+      {
+        $group: {
+          _id: "$tags",
+          totalCost: { $sum: { $multiply: ["$price", "$stock"] } },
+        },
+      },
+    ]);
+    // 4,50,000
+
+    return res.send(products);
+  } catch (error) {
+    return res.send(error);
+  }
+});
+
+QueryRouter.get("/projecting", async (req, res) => {
+  try {
+    const products = await Product.aggregate([
+      { $match: { tags: { $exists: true } } },
+      { $project: { name: 1, description: 1, price: 1 } },
+    ]);
+    // 4,50,000
+
+    return res.send(products);
+  } catch (error) {
+    return res.send(error);
+  }
+});
 export default QueryRouter;
+
+// React - coding test , qa test 17-02
+// backend - coding test, qa test 18-02
+// frontend mock - half hour - html css js react   20-02
+// backend mock - node express mongodb  23-02
